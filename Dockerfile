@@ -26,3 +26,7 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
+
+COPY composer.json composer.lock /var/www/html/
+WORKDIR /var/www/html
+RUN composer install --no-dev --optimize-autoloader
