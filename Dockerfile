@@ -36,6 +36,11 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
 
 EXPOSE 80
 
+RUN mkdir -p /var/www/html/database \
+    && touch /var/www/html/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/html/database \
+    && chmod -R 775 /var/www/html/database
+
 # Paganahin ang Apache mod_rewrite para sa routing
 RUN a2enmod rewrite
 
