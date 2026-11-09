@@ -29,7 +29,7 @@
     <section data-step="date" hidden>
       <ol class="progress" aria-label="Step 1 of 4"><li class="on"></li><li></li><li></li><li></li></ol>
       <h2 class="title" tabindex="-1">What kind of date?</h2>
-      <p class="sub">Pick the one you're in the mood for.</p>
+      <p class="sub">Kiss the one you're in the mood for.</p>
       <div class="opts" id="date-options"></div>
       <div class="actions"><button class="btn ghost" type="button" data-go="landing">Back</button><button class="btn yes" type="button" data-go="day" data-need="date">Continue</button></div>
     </section>
