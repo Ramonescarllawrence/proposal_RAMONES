@@ -1,0 +1,112 @@
+:root{ /* :root = the whole page; variables defined here can be used anywhere with var(--name) */
+  --milk:#fff4e6; --paper:#fffaf3; --cocoa:#4a2c25; --dudu:#c8916b; /* Colors: page background, card background, dark brown text/outlines, bear brown */
+  --blush:#f9b4c2; --honey:#f4bb4a; --berry:#e5456f; /* Colors: soft pink, yellow, strong pink-red for main buttons */
+  --display:"Bagel Fat One","Trebuchet MS",sans-serif; /* Heading font, with fallbacks if it fails to load */
+  --text:"Figtree",system-ui,sans-serif; /* Body font, with fallbacks */
+} /* End of variables */
+*{box-sizing:border-box} /* Padding and border count inside an element's width, which makes sizing predictable */
+html{height:100%} /* Lets the page fill the full window height */
+body{ /* The whole visible page */
+  margin:0; min-height:100dvh; display:grid; place-items:center; padding:20px 14px; /* No default margin; at least full screen height; grid centers the card in the middle; spacing around */
+  font:500 1rem/1.5 var(--text); color:var(--cocoa); /* Font weight/size/line-height, and brown text color */
+  background:var(--milk) radial-gradient(var(--blush) 1.4px,transparent 1.6px) 0 0/26px 26px; /* Cream background with a repeating pink dot every 26px */
+} /* End of body */
+.sheet{ /* The main white card */
+  position:relative; z-index:1; /* Sits above the background GIF layer (which has z-index 0) */
+  width:min(100%,460px); padding:28px 24px 26px; text-align:center; /* Full width up to 460px; inner spacing; centered text */
+  background:var(--paper); border:3px solid var(--cocoa); border-radius:28px; box-shadow:7px 7px 0 var(--cocoa); /* Card color, thick outline, rounded corners, hard offset shadow (sticker look) */
+} /* End of .sheet */
+[hidden]{display:none!important} /* Anything with the hidden attribute is fully removed from view, even if other CSS says otherwise */
+
+.title{font:400 clamp(1.9rem,7vw,2.5rem)/1.1 var(--display); margin:.2em 0 .3em; outline:none} /* Headings: display font, size scales with screen width (min 1.9rem, max 2.5rem), tight spacing, no focus outline */
+.sub{margin:0 auto 1.3rem; max-width:34ch; line-height:1.55} /* Subtitle text: centered, limited line length, space below */
+.hint{margin:1.1rem 0 0; font-size:.9rem; opacity:.75} /* Small faded hint text */
+
+.pic{margin:0 auto 1rem; width:min(210px,58vw); aspect-ratio:1; background:#fff; border:3px solid var(--cocoa); border-radius:24px; overflow:hidden; rotate:-2deg} /* Picture frame: centered square, white, outlined, rounded, clips the image, tilted slightly */
+.pic.small{width:104px; margin-bottom:.7rem; rotate:2deg} /* Smaller version used on the day/time steps, tilted the other way */
+.pic img{width:100%; height:100%; object-fit:contain; display:block} /* Image fills the frame without being cut off or stretched */
+
+.bubble{position:relative; margin:0 0 1rem; padding:.7rem 1rem; background:var(--blush); border:3px solid var(--cocoa); border-radius:18px; font-weight:700} /* Speech bubble for the sad messages */
+.bubble::before{content:""; position:absolute; top:-11px; left:50%; width:16px; height:16px; background:var(--blush); border:3px solid var(--cocoa); border-right:0; border-bottom:0; rotate:45deg; translate:-50% 0} /* The little pointer triangle on top of the bubble, made from a rotated square */
+
+.progress{display:flex; justify-content:center; gap:10px; list-style:none; margin:0 0 1.1rem; padding:0} /* Row of progress hearts, centered, no list bullets */
+.progress li{width:20px; height:18px; background:#eadccb; mask:var(--heart) center/contain no-repeat; -webkit-mask:var(--heart) center/contain no-repeat; /* Each heart: a beige box cut into a heart shape using a mask (-webkit- version for Safari) */
+  --heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'%3E%3Cpath d='M12 21S1 14 1 7.5A5.5 5.5 0 0 1 12 5a5.5 5.5 0 0 1 11 2.5C23 14 12 21 12 21z'/%3E%3C/svg%3E")} /* The heart outline, an SVG image written inline as text */
+.progress li.on{background:var(--berry)} /* A completed step's heart is filled red-pink */
+
+.btn{ /* Base style for every button */
+  font:700 1rem/1.2 var(--text); color:var(--cocoa); background:var(--paper); cursor:pointer; text-decoration:none; display:inline-block; /* Bold text, hand cursor, no underline (for link buttons) */
+  padding:.8rem 1.4rem; border:3px solid var(--cocoa); border-radius:999px; box-shadow:0 4px 0 var(--cocoa); /* Inner spacing, outline, pill shape, solid "3D" bottom edge */
+  transition:transform .08s, box-shadow .08s, background .15s; /* Smooth the press and hover changes */
+} /* End of .btn */
+.btn:hover{background:#fff} /* Hover: button turns white */
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--cocoa)} /* While pressed: moves down and the bottom edge shrinks, like a real button */
+.btn:disabled{opacity:.45; cursor:not-allowed; box-shadow:0 4px 0 var(--cocoa)} /* Disabled (e.g. Continue before choosing): faded, "not allowed" cursor */
+.btn.yes{background:var(--berry); color:#fff} /* Main action buttons: pink-red with white text */
+.btn.yes:hover{background:#d93a64} /* Slightly darker on hover */
+.btn.yes:disabled:hover{background:var(--berry)} /* Disabled yes-buttons don't change on hover */
+.btn.ghost{border-color:transparent; box-shadow:none; background:none; text-decoration:underline; text-underline-offset:4px} /* Back / Start over: just underlined text, no box */
+.btn.ghost:active{transform:none} /* Ghost buttons don't move when pressed */
+:focus-visible{outline:3px dashed var(--berry); outline-offset:3px} /* Dashed outline when using keyboard Tab, so you can see where you are */
+
+.actions{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; align-items:center; margin-top:1.3rem} /* Row of buttons: centered, wraps on small screens, spaced apart */
+#btn-yes{--g:0; font-size:calc(1.05rem + var(--g)*.14rem); padding:calc(.8rem + var(--g)*.1rem) calc(1.4rem + var(--g)*.28rem)} /* Yes button: --g (set by JS) grows with each No click, making the text and padding bigger */
+.btn.no.fly{position:fixed; z-index:50; transition:left .25s, top .25s; max-width:min(250px,80vw)} /* After the first couple of No clicks the button floats free over the page and glides to its new spot */
+.btn.no.flee{transition:left .12s, top .12s; line-height:1.25} /* After 5 clicks: faster movement and room for the long label */
+
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:12px} /* Option buttons laid out in 2 equal columns */
+.opt{display:flex; flex-direction:column; align-items:center; gap:.2rem; padding:.9rem .5rem; font:700 .95rem var(--text); color:var(--cocoa); cursor:pointer; /* Each option: emoji stacked above label, centered */
+  background:#fff; border:3px solid var(--cocoa); border-radius:18px; box-shadow:0 4px 0 var(--cocoa); transition:transform .08s, box-shadow .08s, background .15s} /* White tile with outline and 3D edge */
+.opt .e{font-size:1.9rem; line-height:1.1} /* The big emoji on each option */
+.opt:hover{background:#fff8ee} /* Hover: warm tint */
+.opt[aria-pressed="true"]{background:var(--honey); transform:translateY(3px); box-shadow:0 1px 0 var(--cocoa)} /* Selected option: yellow and pushed down */
+
+.chips{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:12px} /* Row of quick time buttons */
+.chip{font:700 .9rem var(--text); color:var(--cocoa); padding:.45rem .9rem; background:#fff; border:2px solid var(--cocoa); border-radius:999px; cursor:pointer} /* Small pill button */
+.chip[aria-pressed="true"]{background:var(--honey)} /* Selected chip is yellow */
+.field{width:100%; max-width:280px; font:700 1.1rem var(--text); color:var(--cocoa); padding:.7rem 1rem; text-align:center; background:#fff; border:3px solid var(--cocoa); border-radius:16px} /* Style for the date input and the time dropdowns */
+
+.ticket{margin:1rem 0 0; text-align:left; background:var(--honey); border:3px solid var(--cocoa); border-radius:20px; overflow:hidden} /* The yellow ticket; overflow:hidden keeps children inside the rounded corners */
+.ticket-head{padding:.55rem 1.1rem; font:400 1.2rem var(--display); background:var(--cocoa); color:var(--honey)} /* Dark title strip with yellow text */
+.ticket-rows{margin:0; padding:.9rem 1.1rem .4rem} /* Area holding the 4 label/value rows */
+.ticket-rows div{display:flex; justify-content:space-between; gap:12px; padding:.35rem 0; border-bottom:2px dotted rgba(74,44,37,.35)} /* Each row: label on the left, value on the right, dotted line below */
+.ticket-rows div:last-child{border-bottom:0} /* No line under the last row */
+.ticket-rows dt{font-size:.9rem; opacity:.8} /* Labels: smaller and a bit faded */
+.ticket-rows dd{margin:0; font-weight:700; text-align:right} /* Values: bold, right-aligned */
+.ticket-stub{display:flex; align-items:center; gap:14px; padding:.9rem 1.1rem; border-top:3px dashed var(--cocoa); background:var(--paper)} /* Bottom part: GIF + text side by side, dashed "tear here" line on top */
+.ticket-stub img{width:78px; height:78px; border-radius:14px; background:#fff; border:2px solid var(--cocoa); object-fit:contain} /* Small framed hug GIF */
+.ticket-stub p{margin:0; line-height:1.35} /* Thank-you text spacing */
+.ticket-stub strong{font:400 1.5rem var(--display); color:var(--berry)} /* "I love you." in the big pink display font */
+
+.status{margin:.9rem 0 0; font-size:.92rem; overflow-wrap:anywhere} /* Message under the buttons; long links wrap instead of overflowing */
+.status:empty{display:none} /* When there's no message, take no space */
+.status a{color:var(--berry); font-weight:700} /* The share link is pink and bold */
+
+#fx{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:70} /* The full-screen canvas for confetti/tears: covers the screen, above everything, never blocks clicks */
+.ticket{position:relative} /* Makes the ticket the reference point for the absolutely positioned stamp */
+.stamp{position:absolute; right:12px; top:5px; padding:.05rem .6rem; font:400 1.1rem var(--display); color:var(--berry); background:rgba(255,250,243,.9); border:3px solid var(--berry); border-radius:10px; rotate:-6deg; pointer-events:none} /* The "It's a date" stamp: top-right of the ticket, tilted, outlined */
+.stamp.slam{animation:slam .55s cubic-bezier(.2,1.6,.4,1) .5s backwards} /* Plays the slam animation (starts after 0.5s, overshoots slightly for a bouncy hit) */
+.ticket.land{animation:land .6s cubic-bezier(.2,1.4,.4,1)} /* Plays the "ticket drops in" animation */
+.sheet.shake{animation:shake .45s} /* Shakes the card when No is clicked */
+.pic.wobble{animation:wobble .5s} /* Wobbles the picture when No is clicked */
+@keyframes slam{from{scale:3; opacity:0}to{scale:1; opacity:1}} /* Stamp starts huge and invisible, ends normal size */
+@keyframes land{from{transform:translateY(-30px) rotate(-3deg); opacity:0}to{transform:none; opacity:1}} /* Ticket starts above, tilted and invisible, then settles */
+@keyframes shake{20%{translate:-9px 0}40%{translate:8px 0}60%{translate:-6px 0}80%{translate:4px 0}} /* Left-right shake that gets smaller */
+@keyframes wobble{25%{rotate:-9deg}50%{rotate:5deg}75%{rotate:-5deg}} /* Tilts back and forth */
+@keyframes pop{from{scale:.96}to{scale:1}} /* Tiny grow used for the speech bubble */
+.bubble:not([hidden]){animation:pop .25s} /* Each time the bubble shows, it pops in */
+.timebox{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px} /* Hour : minute AM/PM row, centered */
+.timebox .colon{font:400 1.6rem var(--display)} /* The ":" between hour and minute */
+.field.sel{width:auto; min-width:84px; padding:.7rem .6rem} /* Dropdowns are narrower than the date field */
+.ampm{display:flex; gap:6px; margin-left:6px} /* AM and PM buttons side by side */
+.ampm .chip{padding:.7rem 1rem; font-size:1rem; border-width:3px; border-radius:16px} /* Make AM/PM bigger, matching the dropdowns */
+
+/* Tenor stickers drifting around behind the card on the result step */
+.party{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; visibility:hidden; opacity:0; transition:opacity .6s, visibility 0s .6s} /* Full-screen layer behind the card; invisible until the result step; clips anything leaving the screen */
+.party.on{visibility:visible; opacity:1; transition:opacity .6s} /* When "on" (result step) it fades in */
+.party .g{border-radius:16px; overflow:hidden; background:#fff; border:3px solid var(--cocoa); box-shadow:4px 4px 0 var(--cocoa); position:absolute; left:0; top:0; width:calc(var(--w) * var(--sc,1)); /* Each GIF: rounded, outlined, shadowed box starting at the top-left; JS moves it; width comes from --w (times --sc, the phone scale) */
+  opacity:0; transition:opacity .4s; will-change:transform; pointer-events:auto; cursor:grab; touch-action:none; user-select:none} /* Starts invisible, fades in; hints the browser it will move; can be grabbed with mouse/touch; no text selecting or page scrolling while dragging */
+.party .g.held{cursor:grabbing; z-index:5; box-shadow:8px 10px 0 var(--cocoa)} /* While you hold a GIF: closed-hand cursor, on top of the others, bigger shadow as if lifted */
+.party iframe{pointer-events:none} /* The Tenor iframe ignores the mouse so the box underneath receives the drag */
+.party .g a{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)} /* The fallback text link inside each embed is visually hidden but still there */
+@media (max-width:700px){.party .g{--sc:.65}.party .g:nth-child(n+7){display:none}} /* On phones: GIFs are 65% size and only the first 6 are shown */
