@@ -41,6 +41,9 @@ RUN mkdir -p /var/www/html/database \
     && chown -R www-data:www-data /var/www/html/database \
     && chmod -R 775 /var/www/html/database
 
+# Patakbuhin ang migration habang nagbi-build para malikha ang mga tables
+RUN php artisan migrate --force || true
+
 # Paganahin ang Apache mod_rewrite para sa routing
 RUN a2enmod rewrite
 
